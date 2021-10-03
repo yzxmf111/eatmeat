@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xiaotian</groupId>
+    <artifactId>eatmeat</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!--
+        聚合项目想要使用，要在maven根下进行安装（类似于汽车对零配件的组装）
+        之后我们各个模块之间的依赖关系创建成功了
+    -->
+    <modules>
+        <module>eatmeat-common</module>
+        <module>eatmeat-pojo</module>
+        <module>eatmeat-mapper</module>
+        <module>eatmeat-service</module>
+        <module>eatmeat-api</module>
+    </modules>
+
+    <!--建立聚合工程，聚合工程下边的各个子模块之间可以通过maven相互引用，不用写很多重复代码-->
+    <!--
+    1.聚合工程里可以分为顶级工程（父工程）和子工程，两者之间的关系就是父子继承关系，
+    子工程在maven中被称之为模块（module），模块之间是平级的，是可以相互依赖的；-不用写很多重复代码
+    2.子模块可以使用顶级工程里边所有的资源， 子模块之间如果要使用资源，只需要构建依赖即可；-《dependence》
+    3.一个顶级工程可以由多个不同的子工程组合而成。
+    -->
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <!--版本管理-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.5.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <!--            <exclusions>-->
+            <!--                <exclusion>-->
+            <!--                    <groupId>org.springframework.boot</groupId>-->
+            <!--                    <artifactId>spring-boot-starter-logging</artifactId>-->
+            <!--                </exclusion>-->
+            <!--            </exclusions>-->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--
+        以下说法是错误的：
+        默认springboot可以解析到yml文件，加入该依赖可以解析到其他的如properities等文件
+        不用这个依赖springboot也能够解析这些文件，使用后在配置文件中有自动提示，没有的话不提示
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+        数据库->数据源HikariCP->mybatis的整合
+        数据源HikariCP:是springboot官方选择的数据源，springboot已内置，当然也可以选择其他的优秀数据源如druid等
+        -->
+        <!-- mysql驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.16</version>
+        </dependency>
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <!-- 通用mapper逆向工具 -->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+
+
+
+
+    </dependencies>
+
+
+</project>
