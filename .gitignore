@@ -1,0 +1,8 @@
+logs
+.idea
+*.iml
+*/*.iml
+*/target
+*.class
+.DS_Store
+encodings.xml
