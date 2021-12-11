@@ -5,6 +5,8 @@ import com.xiaotian.pojo.Carousel;
 import com.xiaotian.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class CarouselServiceImpl implements CarouselService {
      *
      * @return
      */
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<Carousel> queryAllCarousel(Integer isShow) {
         Example example = new Example(Carousel.class);
@@ -33,8 +36,6 @@ public class CarouselServiceImpl implements CarouselService {
         carouselMapper.selectByExample(example);
         return carouselMapper.selectByExample(example);
     }
-
-    ;
 
 
 }

@@ -23,28 +23,28 @@ public class ScheduleDemo {
 
     @Scheduled(fixedDelay = 1000) //每一秒运行一次
     public void testScheduling() {
-        try {
-//            executor.
-            Thread.sleep(5000);
-            //以下两种方法会从线程池开新线程去执行方法
-            executor.execute(() -> LOGGER.info(Thread.currentThread().getName())
-            );
-            executor.submit(() -> LOGGER.info(Thread.currentThread().getName()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        System.out.println(Thread.currentThread().getName());
-    }
-
-    @Scheduled(fixedDelay = 1000) //每一秒运行一次
-    public void testScheduling222() {
-        try {
-            Thread.sleep(5000);
-            executor.execute(() -> LOGGER.info(Thread.currentThread().getName())
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+////            executor.
+//            Thread.sleep(5000);
+//            //以下两种方法会从线程池开新线程去执行方法
+//            executor.execute(() -> LOGGER.info(Thread.currentThread().getName())
+//            );
+//            executor.submit(() -> LOGGER.info(Thread.currentThread().getName()));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+////        System.out.println(Thread.currentThread().getName());
+//    }
+//
+//    @Scheduled(fixedDelay = 1000) //每一秒运行一次
+//    public void testScheduling222() {
+//        try {
+//            Thread.sleep(5000);
+//            executor.execute(() -> LOGGER.info(Thread.currentThread().getName())
+//            );
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 //        System.out.println(Thread.currentThread().getName())
     }
 }
