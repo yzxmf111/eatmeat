@@ -1,8 +1,5 @@
 package com.xiaotian.pojo.vo;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
-
 import java.util.List;
 
 /**
@@ -10,15 +7,26 @@ import java.util.List;
  * @description
  * @date 2021-12-06 22:02
  */
-public class CategoryVo {
+public class CategoryVO {
 
     private Integer id;
     private String name;
     private String type;
     private Integer fatherId;
 
+    public CategoryVO() {
+    }
+
+    public CategoryVO(Integer id, String name, String type, Integer fatherId, List<SubCategoryVO> subCatList) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.fatherId = fatherId;
+        this.subCatList = subCatList;
+    }
+
     // 三级分类vo list
-    private List<SubCategoryVo> subCatList;
+    private List<SubCategoryVO> subCatList;
 
     public Integer getId() {
         return id;
@@ -52,11 +60,11 @@ public class CategoryVo {
         this.fatherId = fatherId;
     }
 
-    public List<SubCategoryVo> getSubCatList() {
+    public List<SubCategoryVO> getSubCatList() {
         return subCatList;
     }
 
-    public void setSubCatList(List<SubCategoryVo> subCatList) {
+    public void setSubCatList(List<SubCategoryVO> subCatList) {
         this.subCatList = subCatList;
     }
 }

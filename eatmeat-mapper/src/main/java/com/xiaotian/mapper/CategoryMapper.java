@@ -2,8 +2,7 @@ package com.xiaotian.mapper;
 
 import com.xiaotian.my.mapper.MyMapper;
 import com.xiaotian.pojo.Category;
-import com.xiaotian.pojo.vo.CategoryVo;
-import io.swagger.models.auth.In;
+import com.xiaotian.pojo.vo.CategoryVO;
 
 import java.util.List;
 
@@ -15,6 +14,6 @@ public interface CategoryMapper extends MyMapper<Category> {
      * @param fatherId
      * @return
      */
-    List<CategoryVo> queryOtherCategory(Integer fatherId);
+    List<CategoryVO> queryOtherCategory(Integer fatherId);
     
 }

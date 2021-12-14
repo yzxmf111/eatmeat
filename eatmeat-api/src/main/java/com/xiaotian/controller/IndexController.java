@@ -3,7 +3,7 @@ package com.xiaotian.controller;
 import com.xiaotian.enums.YesOrNo;
 import com.xiaotian.pojo.Carousel;
 import com.xiaotian.pojo.Category;
-import com.xiaotian.pojo.vo.CategoryVo;
+import com.xiaotian.pojo.vo.CategoryVO;
 import com.xiaotian.pojo.vo.NewItemsVO;
 import com.xiaotian.service.CarouselService;
 import com.xiaotian.service.CategoryService;
@@ -56,8 +56,8 @@ public class IndexController {
         if (fatherId == null) {
             return Response.errorMsg("分类不存在");
         }
-        List<CategoryVo> categoryVos = categoryService.queryOtherCategory(fatherId);
-        return Response.ok(categoryVos);
+        List<CategoryVO> categoryVOS = categoryService.queryOtherCategory(fatherId);
+        return Response.ok(categoryVOS);
     }
 
 

@@ -16,4 +16,22 @@
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <select id="commentsPageVo" parameterType="map" resultType="com.xiaotian.pojo.vo.CommentPageVO">
+      SELECT
+          ic.content as content,
+          ic.comment_level as commentLevel,
+          ic.created_time as createdTime,
+          ic.sepc_name as specName,
+          u.nickname as userNickName,
+          u.face as userFace
+      from `user` as u
+      LEFT JOIN items_comments as ic
+         on u.id =  ic.user_id
+      where
+      ic.item_id = #{paramsMap.itemId}
+      <if test=" paramsMap.level != null and paramsMap.level != '' ">
+          AND ic.comment_level = #{paramsMap.level}
+      </if>
+  </select>
 </mapper>

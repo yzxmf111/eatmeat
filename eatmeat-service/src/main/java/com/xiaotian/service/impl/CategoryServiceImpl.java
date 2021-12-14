@@ -1,13 +1,9 @@
 package com.xiaotian.service.impl;
 
-import com.xiaotian.mapper.CarouselMapper;
 import com.xiaotian.mapper.CategoryMapper;
-import com.xiaotian.pojo.Carousel;
 import com.xiaotian.pojo.Category;
-import com.xiaotian.pojo.vo.CategoryVo;
-import com.xiaotian.service.CarouselService;
+import com.xiaotian.pojo.vo.CategoryVO;
 import com.xiaotian.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public List<CategoryVo> queryOtherCategory(Integer fatherId) {
+    public List<CategoryVO> queryOtherCategory(Integer fatherId) {
         return categoryMapper.queryOtherCategory(fatherId);
     }
 }

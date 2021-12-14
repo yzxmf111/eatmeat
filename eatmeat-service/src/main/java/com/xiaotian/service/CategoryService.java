@@ -1,7 +1,7 @@
 package com.xiaotian.service;
 
 import com.xiaotian.pojo.Category;
-import com.xiaotian.pojo.vo.CategoryVo;
+import com.xiaotian.pojo.vo.CategoryVO;
 
 import java.util.List;
 
@@ -24,5 +24,5 @@ public interface CategoryService {
      * @param fatherId
      * @return
      */
-    List<CategoryVo> queryOtherCategory(Integer fatherId);
+    List<CategoryVO> queryOtherCategory(Integer fatherId);
 }

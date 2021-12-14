@@ -1,18 +1,23 @@
 package com.xiaotian.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xiaotian.mapper.*;
 import com.xiaotian.pojo.*;
-import com.xiaotian.pojo.vo.CategoryVo;
 import com.xiaotian.pojo.vo.NewItemsVO;
-import com.xiaotian.service.CategoryService;
+import com.xiaotian.pojo.vo.QueryItemsVo;
 import com.xiaotian.service.ItemService;
+import com.xiaotian.utils.PageResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import javax.xml.ws.Response;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 轮播图接口
@@ -43,7 +48,10 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Items queryItem(String itemId) {
-        return itemsMapper.selectByPrimaryKey(itemId);
+        Example example = new Example(Items.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id", itemId);
+        return itemsMapper.selectOneByExample(example);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -51,7 +59,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemsImg> queryItemImgs(String itemId) {
         Example example = new Example(ItemsImg.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("itemId",itemId);
+        criteria.andEqualTo("itemId", itemId);
         return itemsImgMapper.selectByExample(example);
     }
 
@@ -60,7 +68,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemsSpec> queryItemSpec(String itemId) {
         Example example = new Example(ItemsSpec.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("itemId",itemId);
+        criteria.andEqualTo("itemId", itemId);
         return itemsSpecMapper.selectByExample(example);
     }
 
@@ -69,7 +77,19 @@ public class ItemServiceImpl implements ItemService {
     public ItemsParam queryItemParam(String itemId) {
         Example example = new Example(ItemsParam.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("itemId",itemId);
+        criteria.andEqualTo("itemId", itemId);
         return itemsParamMapper.selectOneByExample(example);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PageResult itemsQueryPages(Integer pageNum, Integer pageSize, String keyword, String sort) {
+        PageHelper.startPage(pageNum, pageSize);
+        Map<String,Object> map = new HashMap<>(2);
+        map.put("keyword",keyword);
+        map.put("sort",sort);
+        List<QueryItemsVo> list = itemsMapper.itemsQueryPages(map);
+        PageInfo<QueryItemsVo> info = new PageInfo<>(list);
+        return new PageResult(pageNum,info.getPages(),info.getTotal(),list);
     }
 }

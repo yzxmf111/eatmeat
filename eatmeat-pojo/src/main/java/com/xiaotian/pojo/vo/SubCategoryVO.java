@@ -5,7 +5,7 @@ package com.xiaotian.pojo.vo;
  * @description
  * @date 2021-12-06 22:15
  */
-public class SubCategoryVo {
+public class SubCategoryVO {
 
     private Integer subId;
     private String subName;

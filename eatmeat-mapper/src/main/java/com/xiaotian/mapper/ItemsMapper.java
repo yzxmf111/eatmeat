@@ -3,8 +3,11 @@ package com.xiaotian.mapper;
 import com.xiaotian.my.mapper.MyMapper;
 import com.xiaotian.pojo.Items;
 import com.xiaotian.pojo.vo.NewItemsVO;
+import com.xiaotian.pojo.vo.QueryItemsVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiaotian
@@ -18,5 +21,12 @@ public interface ItemsMapper extends MyMapper<Items> {
      * @return
      */
     List<NewItemsVO> querySixNewItems(Integer fatherId);
+
+    /**
+     * 商品查询接口
+     * @param map
+     * @return
+     */
+    List<QueryItemsVo> itemsQueryPages(@Param("paramMap") Map<String,Object> map);
 
 }

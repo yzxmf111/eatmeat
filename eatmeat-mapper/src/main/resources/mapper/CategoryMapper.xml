@@ -15,7 +15,7 @@
         <result column="bg_color" property="bgColor" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <resultMap id="categoryVo" type="com.xiaotian.pojo.vo.CategoryVo">
+    <resultMap id="categoryVo" type="com.xiaotian.pojo.vo.CategoryVO">
         <!--
           WARNING - @mbg.generated
         -->
@@ -28,7 +28,7 @@
       property：对应三级分类的list属性名
       ofType：集合的类型，三级分类的vo
     -->
-        <collection property="subCatList" ofType="com.xiaotian.pojo.vo.SubCategoryVo">
+        <collection property="subCatList" ofType="com.xiaotian.pojo.vo.SubCategoryVO">
             <id column="subId" property="subId"/>
             <result column="subName" property="subName"/>
             <result column="subType" property="subType"/>

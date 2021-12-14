@@ -30,25 +30,52 @@
         </collection>
     </resultMap>
 
-  <select id="querySixNewItems" resultMap="newSixItemVO" parameterType="int">
-    SELECT
-        c.id AS rootCatId,
-        c.NAME AS rootCatName,
-        c.slogan AS slogan,
-        c.cat_image AS catImage,
-        c.bg_color AS bgColor,
-        i.id AS itemId,
-        i.item_name AS itemName,
-        ii.url AS itemUrl
-    FROM
-       category AS c
-    LEFT JOIN items AS i ON c.id = i.root_cat_id
-    LEFT JOIN items_img AS ii ON i.id = ii.item_id
-    WHERE
-       c.id = #{fatherId}
-       AND ii.is_main = 1
-    ORDER BY
-       i.created_time DESC
-    LIMIT 0, 6
-  </select>
+    <select id="querySixNewItems" resultMap="newSixItemVO" parameterType="int">
+        SELECT
+                c.id AS rootCatId,
+                c.NAME AS rootCatName,
+                c.slogan AS slogan,
+                c.cat_image AS catImage,
+                c.bg_color AS bgColor,
+                i.id AS itemId,
+                i.item_name AS itemName,
+                ii.url AS itemUrl
+        FROM
+              category AS c
+        LEFT JOIN items AS i ON c.id = i.root_cat_id
+        LEFT JOIN items_img AS ii ON i.id = ii.item_id
+        WHERE
+               c.id = #{fatherId}
+               AND ii.is_main = 1
+        ORDER BY
+               i.created_time DESC
+        LIMIT 0, 6
+    </select>
+
+    <!--    对于min(price_discount) 单独 group by-->
+    <select id="itemsQueryPages" parameterType="map" resultType="com.xiaotian.pojo.vo.QueryItemsVo">
+
+        select
+            i.item_name as itemName,
+            i.sell_counts as sellCounts,
+            ii.url as imgUrl,
+            ii.item_id as itemId,
+            tempSpec.priceDiscounts as price
+        from items as i
+        LEFT JOIN items_img as ii
+            on i.id = ii.item_id
+        LEFT JOIN (select item_id ,min(price_discount) as priceDiscounts from items_spec
+        group by item_id) as tempSpec
+        on tempSpec.item_id = ii.item_id
+        where ii.is_main = 1
+
+        <if test="paramMap.keyword != null and paramMap.keyword != '' ">
+            and i.item_name like '%${paramMap.keyword}%'
+        </if>
+        <choose>
+            <when test = "paramMap.sort ==&quot;p&quot;  "> order by price asc</when>
+            <when test = "paramMap.sort == &quot;c&quot; "> order by sellCounts desc</when>
+            <otherwise>  order by itemName asc </otherwise>
+        </choose>
+    </select>
 </mapper>
