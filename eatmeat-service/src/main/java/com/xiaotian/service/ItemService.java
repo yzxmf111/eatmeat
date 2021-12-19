@@ -7,6 +7,7 @@ import com.xiaotian.pojo.ItemsParam;
 import com.xiaotian.pojo.ItemsSpec;
 import com.xiaotian.pojo.vo.NewItemsVO;
 import com.xiaotian.pojo.vo.QueryItemsVo;
+import com.xiaotian.pojo.vo.ShopCatVO;
 import com.xiaotian.utils.PageResult;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,4 +81,11 @@ public interface ItemService {
      */
     PageResult queryItemsByCat(Integer pageNum, Integer pageSize, String catId, String sort);
 
+    /**
+     * 刷新购物车商品
+     *
+     * @param specId
+     * @return
+     */
+    List<ShopCatVO> refresh(List<String> specId);
 }

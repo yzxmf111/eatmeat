@@ -13,6 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author xiaotian
  * @description
@@ -137,6 +140,19 @@ public class ItemController {
         //enum
         PageResult pageResult = itemService.queryItemsByCat(page, pageSize, catId, sort);
         return Response.ok(pageResult);
+    }
+
+    @ApiOperation(value = "购物车商品刷新接口", notes = "购物车商品刷新接口，防止商品价格，图片，名称等出现变更", httpMethod = "GET")
+    @GetMapping("refresh")
+    public Response refresh(
+            @ApiParam(name = "分类id", value = "itemSpecIds", required = true)
+            @RequestParam String itemSpecIds) {
+        if (StringUtils.isBlank(itemSpecIds)) {
+            return Response.ok("");
+        }
+        String[] split = itemSpecIds.split(",");
+        List<String> specIds = Arrays.asList(split);
+    return Response.ok(itemService.refresh(specIds)) ;
     }
 
 }

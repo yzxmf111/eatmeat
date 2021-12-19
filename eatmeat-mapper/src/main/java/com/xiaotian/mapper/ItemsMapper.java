@@ -4,6 +4,7 @@ import com.xiaotian.my.mapper.MyMapper;
 import com.xiaotian.pojo.Items;
 import com.xiaotian.pojo.vo.NewItemsVO;
 import com.xiaotian.pojo.vo.QueryItemsVo;
+import com.xiaotian.pojo.vo.ShopCatVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -36,4 +37,10 @@ public interface ItemsMapper extends MyMapper<Items> {
      */
     List<QueryItemsVo> queryItemsByCat(@Param("paramMap") Map<String,Object> map);
 
+    /**
+     * 刷新购物车
+     * @param specIds
+     * @return
+     */
+    List<ShopCatVO> refresh(@Param("specIds") List<String> specIds);
 }

@@ -6,6 +6,7 @@ import com.xiaotian.mapper.*;
 import com.xiaotian.pojo.*;
 import com.xiaotian.pojo.vo.NewItemsVO;
 import com.xiaotian.pojo.vo.QueryItemsVo;
+import com.xiaotian.pojo.vo.ShopCatVO;
 import com.xiaotian.service.ItemService;
 import com.xiaotian.utils.PageResult;
 import org.springframework.stereotype.Service;
@@ -103,5 +104,10 @@ public class ItemServiceImpl implements ItemService {
         PageInfo<Object> info = new PageInfo<>();
         PageResult pageResult = new PageResult(pageNum, info.getPages(), info.getTotal(), list);
         return pageResult;
+    }
+
+    @Override
+    public List<ShopCatVO> refresh(List<String> specIds) {
+        return itemsMapper.refresh(specIds);
     }
 }
