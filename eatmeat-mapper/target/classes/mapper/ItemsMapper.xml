@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xiaotian.mapper.ItemsMapper" >
-  <resultMap id="BaseResultMap" type="com.xiaotian.pojo.Items" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="id" property="id" jdbcType="VARCHAR" />
-    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
-    <result column="cat_id" property="catId" jdbcType="INTEGER" />
-    <result column="root_cat_id" property="rootCatId" jdbcType="INTEGER" />
-    <result column="sell_counts" property="sellCounts" jdbcType="INTEGER" />
-    <result column="on_off_status" property="onOffStatus" jdbcType="INTEGER" />
-    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
-    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
-    <result column="content" property="content" jdbcType="LONGVARCHAR" />
-  </resultMap>
+<mapper namespace="com.xiaotian.mapper.ItemsMapper">
+    <resultMap id="BaseResultMap" type="com.xiaotian.pojo.Items">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        <result column="cat_id" property="catId" jdbcType="INTEGER"/>
+        <result column="root_cat_id" property="rootCatId" jdbcType="INTEGER"/>
+        <result column="sell_counts" property="sellCounts" jdbcType="INTEGER"/>
+        <result column="on_off_status" property="onOffStatus" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+    </resultMap>
 
     <resultMap id="newSixItemVO" type="com.xiaotian.pojo.vo.NewItemsVO">
         <id property="rootCatId" column="rootCatId"/>
@@ -32,23 +32,23 @@
 
     <select id="querySixNewItems" resultMap="newSixItemVO" parameterType="int">
         SELECT
-                c.id AS rootCatId,
-                c.NAME AS rootCatName,
-                c.slogan AS slogan,
-                c.cat_image AS catImage,
-                c.bg_color AS bgColor,
-                i.id AS itemId,
-                i.item_name AS itemName,
-                ii.url AS itemUrl
+        c.id AS rootCatId,
+        c.NAME AS rootCatName,
+        c.slogan AS slogan,
+        c.cat_image AS catImage,
+        c.bg_color AS bgColor,
+        i.id AS itemId,
+        i.item_name AS itemName,
+        ii.url AS itemUrl
         FROM
-              category AS c
+        category AS c
         LEFT JOIN items AS i ON c.id = i.root_cat_id
         LEFT JOIN items_img AS ii ON i.id = ii.item_id
         WHERE
-               c.id = #{fatherId}
-               AND ii.is_main = 1
+        c.id = #{fatherId}
+        AND ii.is_main = 1
         ORDER BY
-               i.created_time DESC
+        i.created_time DESC
         LIMIT 0, 6
     </select>
 
@@ -56,14 +56,14 @@
     <select id="itemsQueryPages" parameterType="map" resultType="com.xiaotian.pojo.vo.QueryItemsVo">
 
         select
-            i.item_name as itemName,
-            i.sell_counts as sellCounts,
-            ii.url as imgUrl,
-            ii.item_id as itemId,
-            tempSpec.priceDiscounts as price
+        i.item_name as itemName,
+        i.sell_counts as sellCounts,
+        ii.url as imgUrl,
+        ii.item_id as itemId,
+        tempSpec.priceDiscounts as price
         from items as i
         LEFT JOIN items_img as ii
-            on i.id = ii.item_id
+        on i.id = ii.item_id
         LEFT JOIN (select item_id ,min(price_discount) as priceDiscounts from items_spec
         group by item_id) as tempSpec
         on tempSpec.item_id = ii.item_id
@@ -73,11 +73,33 @@
             and i.item_name like '%${paramMap.keyword}%'
         </if>
         <choose>
-            <when test = "paramMap.sort ==&quot;p&quot;  "> order by price asc</when>
-            <when test = "paramMap.sort == &quot;c&quot; "> order by sellCounts desc</when>
-            <otherwise>  order by itemName asc </otherwise>
+            <when test="paramMap.sort ==&quot;p&quot;  ">order by price asc</when>
+            <when test="paramMap.sort == &quot;c&quot; ">order by sellCounts desc</when>
+            <otherwise>order by itemName asc</otherwise>
         </choose>
+    </select>
 
 
+    <select id="queryItemsByCat" parameterType="map" resultType="com.xiaotian.pojo.vo.QueryItemsVo">
+
+        select
+            i.item_name as itemName,
+            i.sell_counts as sellCounts,
+            ii.url as imgUrl,
+            ii.item_id as itemId,
+            tempSpec.priceDiscounts as price
+            from items as i
+            LEFT JOIN items_img as ii
+            on i.id = ii.item_id
+            LEFT JOIN (select item_id ,min(price_discount) as priceDiscounts from items_spec
+            group by item_id) as tempSpec
+        on tempSpec.item_id = ii.item_id
+        where ii.is_main = 1
+        and i.cat_id = #{paramMap.catId}
+        <choose>
+            <when test="paramMap.sort ==&quot;p&quot;  ">order by price asc</when>
+            <when test="paramMap.sort == &quot;c&quot; ">order by sellCounts desc</when>
+            <otherwise>order by itemName asc</otherwise>
+        </choose>
     </select>
 </mapper>

@@ -120,7 +120,7 @@ public class PassportController {
 
 
         // TODO 生成用户token，存入redis会话
-        // TODO 同步购物车数据
+        // TODO 同步购物车数据 （多台电脑之间的数据同步）
 
         return Response.ok(userResult);
     }

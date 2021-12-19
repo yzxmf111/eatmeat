@@ -62,12 +62,22 @@ public interface ItemService {
     ItemsParam queryItemParam(String itemId);
 
     /**
-     * 商品查询接口
+     * 根据keyword查询商品
      *
      * @param pageNum, pageSize,  itemId,  sort
      * @return
      */
     PageResult itemsQueryPages(Integer pageNum, Integer pageSize, String keyword, String sort);
 
+    /**
+     * 根据分类名查询商品
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param catId
+     * @param sort
+     * @return
+     */
+    PageResult queryItemsByCat(Integer pageNum, Integer pageSize, String catId, String sort);
 
 }

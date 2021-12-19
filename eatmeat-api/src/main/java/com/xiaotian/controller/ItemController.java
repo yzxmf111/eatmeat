@@ -114,4 +114,29 @@ public class ItemController {
         return Response.ok(pageResult);
     }
 
+    @ApiOperation(value = "商品查询接口", notes = "商品查询接口", httpMethod = "GET")
+    @GetMapping("catItems")
+    public Response querycatItems(
+            @ApiParam(name = "分类id", value = "catId", required = true)
+            @RequestParam String catId,
+            @ApiParam(name = "排序方式", value = "sort", required = false)
+            @RequestParam(required = false) String sort,
+            @ApiParam(name = "当前页数", value = "pageNum", required = false)
+            @RequestParam(required = false) Integer page,
+            @ApiParam(name = "当前页数商品数量", value = "pageSize", required = false)
+            @RequestParam(required = false) Integer pageSize) {
+        if (StringUtils.isBlank(catId)) {
+            return Response.errorMsg("");
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 20;
+        }
+        //enum
+        PageResult pageResult = itemService.queryItemsByCat(page, pageSize, catId, sort);
+        return Response.ok(pageResult);
+    }
+
 }

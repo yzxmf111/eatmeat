@@ -23,10 +23,17 @@ public interface ItemsMapper extends MyMapper<Items> {
     List<NewItemsVO> querySixNewItems(Integer fatherId);
 
     /**
-     * 商品查询接口
+     * 商品查询接口1：根据keyword查询商品
      * @param map
      * @return
      */
     List<QueryItemsVo> itemsQueryPages(@Param("paramMap") Map<String,Object> map);
+
+    /**
+     * 商品查询接口2:根据分类名查询商品
+     * @param map
+     * @return
+     */
+    List<QueryItemsVo> queryItemsByCat(@Param("paramMap") Map<String,Object> map);
 
 }

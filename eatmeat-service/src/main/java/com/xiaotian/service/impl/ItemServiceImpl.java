@@ -85,11 +85,23 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public PageResult itemsQueryPages(Integer pageNum, Integer pageSize, String keyword, String sort) {
         PageHelper.startPage(pageNum, pageSize);
-        Map<String,Object> map = new HashMap<>(2);
-        map.put("keyword",keyword);
-        map.put("sort",sort);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("keyword", keyword);
+        map.put("sort", sort);
         List<QueryItemsVo> list = itemsMapper.itemsQueryPages(map);
         PageInfo<QueryItemsVo> info = new PageInfo<>(list);
-        return new PageResult(pageNum,info.getPages(),info.getTotal(),list);
+        return new PageResult(pageNum, info.getPages(), info.getTotal(), list);
+    }
+
+    @Override
+    public PageResult queryItemsByCat(Integer pageNum, Integer pageSize, String catId, String sort) {
+        PageHelper.startPage(pageNum, pageSize);
+        Map<String, Object> map = new HashMap<>();
+        map.put("catId", catId);
+        map.put("sort", sort);
+        List<QueryItemsVo> list = itemsMapper.queryItemsByCat(map);
+        PageInfo<Object> info = new PageInfo<>();
+        PageResult pageResult = new PageResult(pageNum, info.getPages(), info.getTotal(), list);
+        return pageResult;
     }
 }
