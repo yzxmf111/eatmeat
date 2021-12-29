@@ -8,6 +8,7 @@ public class UserAddress {
     /**
      * 地址主键id
      */
+    @Id
     private String id;
 
     /**

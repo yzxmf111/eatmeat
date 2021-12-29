@@ -1,12 +1,14 @@
 package com.xiaotian.pojo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.util.Date;
 
 public class Items {
     /**
      * 商品主键id
      */
+    @Id
     private String id;
 
     /**

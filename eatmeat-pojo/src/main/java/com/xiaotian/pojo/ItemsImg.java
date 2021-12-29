@@ -8,6 +8,7 @@ public class ItemsImg {
     /**
      * 图片主键
      */
+    @Id
     private String id;
 
     /**
