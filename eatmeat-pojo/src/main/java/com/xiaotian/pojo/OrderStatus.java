@@ -8,6 +8,7 @@ public class OrderStatus {
     /**
      * 订单ID;对应订单表的主键id
      */
+    @Id
     @Column(name = "order_id")
     private String orderId;
 

@@ -1,54 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xiaotian.mapper.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.xiaotian.pojo.User" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="Host" property="host" jdbcType="CHAR" />
-    <result column="User" property="user" jdbcType="CHAR" />
-    <result column="Select_priv" property="selectPriv" jdbcType="CHAR" />
-    <result column="Insert_priv" property="insertPriv" jdbcType="CHAR" />
-    <result column="Update_priv" property="updatePriv" jdbcType="CHAR" />
-    <result column="Delete_priv" property="deletePriv" jdbcType="CHAR" />
-    <result column="Create_priv" property="createPriv" jdbcType="CHAR" />
-    <result column="Drop_priv" property="dropPriv" jdbcType="CHAR" />
-    <result column="Reload_priv" property="reloadPriv" jdbcType="CHAR" />
-    <result column="Shutdown_priv" property="shutdownPriv" jdbcType="CHAR" />
-    <result column="Process_priv" property="processPriv" jdbcType="CHAR" />
-    <result column="File_priv" property="filePriv" jdbcType="CHAR" />
-    <result column="Grant_priv" property="grantPriv" jdbcType="CHAR" />
-    <result column="References_priv" property="referencesPriv" jdbcType="CHAR" />
-    <result column="Index_priv" property="indexPriv" jdbcType="CHAR" />
-    <result column="Alter_priv" property="alterPriv" jdbcType="CHAR" />
-    <result column="Show_db_priv" property="showDbPriv" jdbcType="CHAR" />
-    <result column="Super_priv" property="superPriv" jdbcType="CHAR" />
-    <result column="Create_tmp_table_priv" property="createTmpTablePriv" jdbcType="CHAR" />
-    <result column="Lock_tables_priv" property="lockTablesPriv" jdbcType="CHAR" />
-    <result column="Execute_priv" property="executePriv" jdbcType="CHAR" />
-    <result column="Repl_slave_priv" property="replSlavePriv" jdbcType="CHAR" />
-    <result column="Repl_client_priv" property="replClientPriv" jdbcType="CHAR" />
-    <result column="Create_view_priv" property="createViewPriv" jdbcType="CHAR" />
-    <result column="Show_view_priv" property="showViewPriv" jdbcType="CHAR" />
-    <result column="Create_routine_priv" property="createRoutinePriv" jdbcType="CHAR" />
-    <result column="Alter_routine_priv" property="alterRoutinePriv" jdbcType="CHAR" />
-    <result column="Create_user_priv" property="createUserPriv" jdbcType="CHAR" />
-    <result column="Event_priv" property="eventPriv" jdbcType="CHAR" />
-    <result column="Trigger_priv" property="triggerPriv" jdbcType="CHAR" />
-    <result column="Create_tablespace_priv" property="createTablespacePriv" jdbcType="CHAR" />
-    <result column="ssl_type" property="sslType" jdbcType="CHAR" />
-    <result column="max_questions" property="maxQuestions" jdbcType="INTEGER" />
-    <result column="max_updates" property="maxUpdates" jdbcType="INTEGER" />
-    <result column="max_connections" property="maxConnections" jdbcType="INTEGER" />
-    <result column="max_user_connections" property="maxUserConnections" jdbcType="INTEGER" />
-    <result column="plugin" property="plugin" jdbcType="CHAR" />
-    <result column="password_expired" property="passwordExpired" jdbcType="CHAR" />
-    <result column="password_last_changed" property="passwordLastChanged" jdbcType="TIMESTAMP" />
-    <result column="password_lifetime" property="passwordLifetime" jdbcType="SMALLINT" />
-    <result column="account_locked" property="accountLocked" jdbcType="CHAR" />
-    <result column="ssl_cipher" property="sslCipher" jdbcType="LONGVARBINARY" />
-    <result column="x509_issuer" property="x509Issuer" jdbcType="LONGVARBINARY" />
-    <result column="x509_subject" property="x509Subject" jdbcType="LONGVARBINARY" />
-    <result column="authentication_string" property="authenticationString" jdbcType="LONGVARCHAR" />
-  </resultMap>
+
 </mapper>
