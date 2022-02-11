@@ -26,12 +26,13 @@ public class OrderTask {
      * 解决方案：只使用一台计算机节点，单独用来运行所有的定时任务
      * 3.会对数据库全表搜索，及其影响数据库性能； select * from  order where orderStatus = 10;
      * 定时任务，仅仅只使用于小型轻量级项目，传统项目
+     *
      * 解决办法:
      * 使用消息队列：MQ->RabbitMQ，RocketMQ，Kafka，ZeroMQ
      * 延时任务（队列）
      * 10：12分下单，未付款（10）状态，11：12分检查，如果当前状态还是10，则直接关闭订单
      */
-    @Scheduled(cron = "0/3 * * * * ?")
+    @Scheduled(cron = "0 0 0 1/1 * ?")
     public void closeOrderTask() {
         orderTaskService.closeOrder();
     }
