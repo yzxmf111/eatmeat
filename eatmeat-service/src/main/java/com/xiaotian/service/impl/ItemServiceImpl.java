@@ -135,10 +135,10 @@ public class ItemServiceImpl implements ItemService {
     public void decreaseItemSpecStock(String specId, int buyCounts) {
 
         // synchronized 不推荐使用，集群下无用，性能低下
-        // 锁数据库: 不推荐，导致数据库性能低下
+        // 锁数据库（整个都是排他锁）: 不推荐，导致数据库性能低下
         // 分布式锁 zookeeper redis
 
-        // lockUtil.getLock(); -- 加锁
+         //lockUtil.getLock(); -- 加锁
 
         // 1. 查询库存
 //        int stock = 10;
@@ -152,6 +152,11 @@ public class ItemServiceImpl implements ItemService {
         // lockUtil.unLock(); -- 解锁
 
 
+        /**
+         * 数据库的隔离级别是可重复读，但是解决不了幻读的问题，因此使用乐观锁（此处的乐观锁未加版本号，使用的是另一种方式）
+         * 数据库层面实现的乐观锁，做cru的时候是排他锁，
+         * 做查询的时候是共享锁，比 锁数据库（整个都是排他锁）相对效率高
+         */
         int result = itemsMapper.decreaseItemSpecStock(specId, buyCounts);
         if (result != 1) {
             throw new RuntimeException("订单创建失败，原因：库存不足!");

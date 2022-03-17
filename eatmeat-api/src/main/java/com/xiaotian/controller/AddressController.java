@@ -20,7 +20,7 @@ import java.util.List;
 public class AddressController {
 
     @Autowired
-    private AddressService addressService;
+    private AddressService addressService; 
 
     @ApiOperation(value = "用户的所有地址信息", notes = "用户的所有地址信息", httpMethod = "POST")
     @PostMapping("add")

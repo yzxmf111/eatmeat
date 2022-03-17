@@ -2,6 +2,9 @@ package com.xiaotian.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class User {
@@ -24,6 +27,7 @@ public class User {
     /**
      * 昵称 昵称
      */
+    @NotBlank(message = "昵称不能为空")
     private String nickname;
 
     /**
@@ -39,11 +43,13 @@ public class User {
     /**
      * 手机号 手机号
      */
+    @Size(max = 13, min = 13, message = "手机号为13位")
     private String mobile;
 
     /**
      * 邮箱地址 邮箱地址
      */
+    @Email
     private String email;
 
     /**
