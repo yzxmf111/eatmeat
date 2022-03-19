@@ -11,5 +11,7 @@ public interface UserInfoService {
 
     User queryUserInfo(String userId);
 
-    Boolean updateUserInfo(User user, String id);
+    User updateUserInfo(User user, String id);
+
+    User updateUserFace(String userId, String userFaceUrl);
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 public class FileUploadConfig {
 
     private String fileUploadPath;
+    private String serverPath;
 
     public String getFileUploadPath() {
         return fileUploadPath;
@@ -22,5 +23,13 @@ public class FileUploadConfig {
 
     public void setFileUploadPath(String fileUploadPath) {
         this.fileUploadPath = fileUploadPath;
+    }
+
+    public String getServerPath() {
+        return serverPath;
+    }
+
+    public void setServerPath(String serverPath) {
+        this.serverPath = serverPath;
     }
 }

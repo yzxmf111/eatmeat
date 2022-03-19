@@ -5,6 +5,9 @@ import com.xiaotian.controller.BaseController;
 import com.xiaotian.enums.ErrorMessage;
 import com.xiaotian.pojo.User;
 import com.xiaotian.service.usercenter.UserInfoService;
+import com.xiaotian.utils.CookieUtils;
+import com.xiaotian.utils.DateUtil;
+import com.xiaotian.utils.JsonUtils;
 import com.xiaotian.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,11 +20,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +63,8 @@ public class UserCenterController extends BaseController {
     @PostMapping("update")
     public Response userInfo(
             @ApiParam(name = "用户id", value = "用户id", required = true) String userId,
-            @RequestBody @Valid User user, BindingResult result) {
+            @RequestBody @Valid User user, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
         if (StringUtils.isEmpty(userId)) {
             return Response.errorMsg(ErrorMessage.PARAM_ERROR.getMessage());
         }
@@ -66,15 +73,14 @@ public class UserCenterController extends BaseController {
             Map<String, String> map = getErrors(result);
             return Response.errorMap(map);
         }
+
+        User userInfo = userInfoService.updateUserInfo(user, userId);
         /**
          * 正常来说，前端做了user的字段校验，后端也是要做的
          */
-        userInfoService.updateUserInfo(user, userId);
-
-
-        //userResult = setNullProperty(userResult);
-        //CookieUtils.setCookie(request, response, "user",
-        //        JsonUtils.objectToJson(userResult), true);
+        userInfo = setNullProperty(userInfo);
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(userInfo), true);
 
         // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
         return Response.ok("");
@@ -98,7 +104,8 @@ public class UserCenterController extends BaseController {
     @PostMapping("uploadFace")
     public Response uploadUserFace(
             @ApiParam(name = "用户id", value = "用户id", required = true) String userId,
-            @ApiParam(name = "用户头像", value = "用户头像", required = true) MultipartFile file) {
+            @ApiParam(name = "用户头像", value = "用户头像", required = true) MultipartFile file,
+            HttpServletRequest request, HttpServletResponse response) {
         if (StringUtils.isEmpty(userId)) {
             return Response.errorMsg(ErrorMessage.PARAM_ERROR.getMessage());
         }
@@ -113,7 +120,12 @@ public class UserCenterController extends BaseController {
             if (StringUtils.isNotBlank(originalFilename)) {
                 String[] split = originalFilename.split("\\.");
                 //文件名
-                String faceName = "face" + "_" + userId + "_" + System.currentTimeMillis() + "." + split[split.length - 1];
+                String suffix = split[split.length - 1];
+                if (StringUtils.equalsIgnoreCase("jpg", suffix) && StringUtils.equalsIgnoreCase("png", suffix) &&
+                        StringUtils.equalsIgnoreCase("jpeg", suffix)) {
+                    return Response.errorException("请选择正确的图片格式");
+                }
+                String faceName = "face" + "_" + userId + "_" + System.currentTimeMillis() + "." + suffix;
                 //抽象路径名
                 String filePath = fileUploadConfig.getFileUploadPath() + File.separator + userId + File.separator + faceName;
                 File outputFile = new File(filePath);
@@ -124,6 +136,13 @@ public class UserCenterController extends BaseController {
                 // 文件输出保存到目录
                 outputStream = new FileOutputStream(outputFile);
                 IOUtils.copy(inputStream, outputStream);
+                //更新用户头像信息
+                String fileUrl = fileUploadConfig.getServerPath() + "/" + userId + "/" + faceName;
+                //由于浏览器存在缓存,加上时间戳保证前端页面的即时刷新
+                User userInfo = userInfoService.updateUserFace(userId, fileUrl + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATETIME_PATTERN));
+                userInfo = setNullProperty(userInfo);
+                CookieUtils.setCookie(request, response, "user",
+                        JsonUtils.objectToJson(userInfo), true);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -140,5 +159,22 @@ public class UserCenterController extends BaseController {
             }
         }
         return Response.ok("");
+    }
+
+
+    private User setNullProperty(User userInfo) {
+        if (userInfo == null) {
+            return new User();
+        }
+        userInfo.setId(null);
+        userInfo.setRealname(null);
+        userInfo.setPassword(null);
+        userInfo.setMobile(null);
+        return userInfo;
+    }
+
+    public static void main(String[] args) {
+        String currentDateTime = DateUtil.getCurrentDateString(DateUtil.DATETIME_PATTERN);
+        System.out.println(currentDateTime);
     }
 }
