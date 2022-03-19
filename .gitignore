@@ -9,3 +9,5 @@ encodings.xml
 *.lst
 */libraries
 */lib
+*.png
+*.jpg

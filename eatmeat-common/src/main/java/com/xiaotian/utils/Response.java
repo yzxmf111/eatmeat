@@ -1,7 +1,9 @@
 package com.xiaotian.utils;
 
+import ch.qos.logback.core.status.ErrorStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xiaotian.enums.ErrorEnum;
 
 /**
  * 
@@ -73,6 +75,22 @@ public class Response {
     
     public static Response errorUserQQ(String msg) {
         return new Response(556, msg, null);
+    }
+
+    public static Response error(ErrorEnum error, Object data) {
+        Response response = new Response();
+        response.setStatus(error.code);
+        response.setMsg(error.desc);
+        response.setData(data);
+        return response;
+    }
+
+    public static Response error(ErrorEnum error) {
+        Response response = new Response();
+        response.setStatus(error.code);
+        response.setMsg(error.desc);
+        response.setData("");
+        return response;
     }
 
     public Response() {

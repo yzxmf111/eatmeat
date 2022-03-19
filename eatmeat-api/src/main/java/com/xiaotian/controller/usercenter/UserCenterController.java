@@ -1,25 +1,27 @@
 package com.xiaotian.controller.usercenter;
 
-import com.xiaotian.enums.ErrorEnum;
+import com.xiaotian.config.FileUploadConfig;
+import com.xiaotian.controller.BaseController;
 import com.xiaotian.enums.ErrorMessage;
 import com.xiaotian.pojo.User;
-import com.xiaotian.pojo.vo.CategoryVO;
 import com.xiaotian.service.usercenter.UserInfoService;
-import com.xiaotian.utils.CookieUtils;
-import com.xiaotian.utils.JsonUtils;
 import com.xiaotian.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,10 +34,13 @@ import java.util.Map;
 @Api(value = "个人用户中心api", tags = {"个人用户中心api"})
 @RestController
 @RequestMapping("center")
-public class UserCenterController {
+public class UserCenterController extends BaseController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private FileUploadConfig fileUploadConfig;
 
     @ApiOperation(value = "查询用户信息", notes = "根据用户id查询用户信息", httpMethod = "GET")
     @GetMapping("userInfo")
@@ -87,5 +92,53 @@ public class UserCenterController {
         //File a = new File("/usr/ddd/aaa");
         //a.getParentFile().mkdirs()
         return map;
+    }
+
+    @ApiOperation(value = "用户头像上传", notes = "用户头像上传", httpMethod = "POST")
+    @PostMapping("uploadFace")
+    public Response uploadUserFace(
+            @ApiParam(name = "用户id", value = "用户id", required = true) String userId,
+            @ApiParam(name = "用户头像", value = "用户头像", required = true) MultipartFile file) {
+        if (StringUtils.isEmpty(userId)) {
+            return Response.errorMsg(ErrorMessage.PARAM_ERROR.getMessage());
+        }
+        if (file == null) {
+            return Response.errorMsg(ErrorMessage.PARAM_ERROR.getMessage());
+        }
+        InputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        //定义文件名 在固定路径下写face-{userId}-当前时间.png/.jpg
+        try {
+            String originalFilename = file.getOriginalFilename();
+            if (StringUtils.isNotBlank(originalFilename)) {
+                String[] split = originalFilename.split("\\.");
+                //文件名
+                String faceName = "face" + "_" + userId + "_" + System.currentTimeMillis() + "." + split[split.length - 1];
+                //抽象路径名
+                String filePath = fileUploadConfig.getFileUploadPath() + File.separator + userId + File.separator + faceName;
+                File outputFile = new File(filePath);
+                if (!outputFile.getParentFile().exists()) {
+                    outputFile.getParentFile().mkdirs();
+                }
+                inputStream = file.getInputStream();
+                // 文件输出保存到目录
+                outputStream = new FileOutputStream(outputFile);
+                IOUtils.copy(inputStream, outputStream);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Response.ok("");
     }
 }
