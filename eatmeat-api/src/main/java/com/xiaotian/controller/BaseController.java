@@ -20,7 +20,7 @@ public class BaseController {
 
     // 微信支付成功 -> 支付中心 -> 天天吃货平台
     //                       |-> 回调通知的url -->修改订单状态
-    String payReturnUrl = "http://101.43.107.106:8088/orders/notifyMerchantOrderPaid";
+    String payReturnUrl = "http://qkihbq.natappfree.cc/orders/notifyMerchantOrderPaid";
     //为了兼容win、mac、linux的"/" ， 但是最好改成可配置的
     public static final String USER_FACE_FILE_PATH = File.separator + "Users" + File.separator + "xiaotian" + File.separator
                                                     + "Downloads" + File.separator + "日常文档" + File.separator + "image"
