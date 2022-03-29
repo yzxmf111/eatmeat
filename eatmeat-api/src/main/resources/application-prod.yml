@@ -1,0 +1,4 @@
+spring:
+  datasource: # 数据源的相关配置
+    url: jdbc:mysql://101.43.107.106:3306/eatmeat?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    password: yzxmf111@QQ.com
