@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").
-                addResourceLocations("file:/Users/xiaotian/Downloads/items/userface/") //最后的'/'不要忘记了
-                .addResourceLocations("classpath:/META-INF/resources/"); //swagger2默认的映射位置
+                addResourceLocations("file:/Users/xiaotian/Downloads/items/userface")
+                .addResourceLocations("classpath:/META_INF.resources"); //swagger2默认的映射位置
     }
 }

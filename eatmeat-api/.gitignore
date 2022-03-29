@@ -6,8 +6,5 @@ logs
 *.class
 .DS_Store
 encodings.xml
-*.lst
-*/libraries
-*/lib
-*.png
-*.jpg
+Application.class
+eatmeat-api/target
