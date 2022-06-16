@@ -11,3 +11,5 @@ encodings.xml
 */lib
 *.png
 *.jpg
+*/target/*.yml
+*/calss

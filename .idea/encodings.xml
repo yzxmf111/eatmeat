@@ -8,5 +8,6 @@
     <file url="file://$PROJECT_DIR$/eatmeat-mapper/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eatmeat-pojo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eatmeat-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib" charset="UTF-8" />
   </component>
 </project>
