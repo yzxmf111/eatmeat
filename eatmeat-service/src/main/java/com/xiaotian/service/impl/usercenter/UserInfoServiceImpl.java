@@ -30,7 +30,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("id", userId);
         User user = userMapper.selectOneByExample(example);
-        //user.setId("");
+        user.setId("");
         user.setPassword("");
         return user;
     }

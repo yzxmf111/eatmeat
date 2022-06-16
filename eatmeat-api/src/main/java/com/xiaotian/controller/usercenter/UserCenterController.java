@@ -121,9 +121,9 @@ public class UserCenterController extends BaseController {
                 String[] split = originalFilename.split("\\.");
                 //文件名
                 String suffix = split[split.length - 1];
-                if (!StringUtils.equalsIgnoreCase("jpg", suffix) && !StringUtils.equalsIgnoreCase("png", suffix) &&
-                        !StringUtils.equalsIgnoreCase("jpeg", suffix)) {
-                    return Response.errorException("请选择正确的图片格式，以jpg, png, jpeg为后缀名");
+                if (StringUtils.equalsIgnoreCase("jpg", suffix) && StringUtils.equalsIgnoreCase("png", suffix) &&
+                        StringUtils.equalsIgnoreCase("jpeg", suffix)) {
+                    return Response.errorException("请选择正确的图片格式");
                 }
                 String faceName = "face" + "_" + userId + "_" + System.currentTimeMillis() + "." + suffix;
                 //抽象路径名
@@ -166,7 +166,7 @@ public class UserCenterController extends BaseController {
         if (userInfo == null) {
             return new User();
         }
-        //userInfo.setId(null);
+        userInfo.setId(null);
         userInfo.setRealname(null);
         userInfo.setPassword(null);
         userInfo.setMobile(null);

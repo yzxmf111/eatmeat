@@ -9,8 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <packaging>jar</packaging>
-
     <artifactId>eatmeat-api</artifactId>
 
     <properties>
@@ -34,15 +32,4 @@
             <version>1.2.70</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <finalName>springboot-course</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
