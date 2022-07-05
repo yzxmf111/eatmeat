@@ -1,8 +1,11 @@
 package com.xiaotian.service;
 
 import com.xiaotian.pojo.OrderStatus;
+import com.xiaotian.pojo.bo.ShopCatBO;
 import com.xiaotian.pojo.bo.SubmitOrderBO;
 import com.xiaotian.pojo.vo.OrderVO;
+
+import java.util.List;
 
 /**
  * @author xiaotian
@@ -13,9 +16,10 @@ public interface OrderService {
 
     /**
      * 用于创建订单相关信息
+     * @param shopCatBOList
      * @param submitOrderBO
      */
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO);
+    public OrderVO createOrder(List<ShopCatBO> shopCatBOList, SubmitOrderBO submitOrderBO);
 
     /**
      * 修改订单状态

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "注册登录", tags = {"用于注册登录的相关接口"})
 @RestController
 @RequestMapping("passport")
-public class PassportController {
+public class PassportController extends BaseController{
 
     @Autowired
     private UserService userService;
@@ -46,8 +46,8 @@ public class PassportController {
     @ApiOperation(value = "用户注册", notes = "用户注册", httpMethod = "POST")
     @PostMapping("/regist")
     public Response regist(@RequestBody UserBO userBO,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -93,8 +93,8 @@ public class PassportController {
     @ApiOperation(value = "用户登录", notes = "用户登录", httpMethod = "POST")
     @PostMapping("/login")
     public Response login(@RequestBody UserBO userBO,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                          HttpServletRequest request,
+                          HttpServletResponse response) throws Exception {
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -107,7 +107,7 @@ public class PassportController {
 
         // 1. 实现登录
         User userResult = userService.queryUserForLogin(username,
-                    MD5Utils.getMD5Str(password));
+                MD5Utils.getMD5Str(password));
 
         if (userResult == null) {
             return Response.errorMsg("用户名或密码不正确");
@@ -139,13 +139,14 @@ public class PassportController {
     @ApiOperation(value = "用户退出登录", notes = "用户退出登录", httpMethod = "POST")
     @PostMapping("/logout")
     public Response logout(@RequestParam String userId,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
 
         // 清除用户的相关信息的cookie
         CookieUtils.deleteCookie(request, response, "user");
 
-        // TODO 用户退出登录，需要清空购物车
+        // TODO 用户退出登录，需要清空cookie购物车
+        CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART + ":" + userId);
         // TODO 分布式会话中需要清除用户数据
 
         return Response.ok();

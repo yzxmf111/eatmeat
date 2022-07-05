@@ -75,11 +75,11 @@ public class IndexController {
         if (fatherId == null) {
             return Response.errorMsg("分类不存在");
         }
-        String subCat = redisOperator.get("subCat");
+        String subCat = redisOperator.get("subCat:" + fatherId);
         if (StringUtils.isBlank(subCat)) {
             List<CategoryVO> categoryVOS = categoryService.queryOtherCategory(fatherId);
             subCat = JSONObject.toJSONString(categoryVOS);
-            redisOperator.set("subCat", subCat);
+            redisOperator.set("subCat:" + fatherId, subCat);
         }
         return Response.ok(subCat);
     }

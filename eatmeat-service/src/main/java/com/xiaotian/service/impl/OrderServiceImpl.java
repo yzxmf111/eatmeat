@@ -6,6 +6,7 @@ import com.xiaotian.mapper.OrderItemsMapper;
 import com.xiaotian.mapper.OrderStatusMapper;
 import com.xiaotian.mapper.OrdersMapper;
 import com.xiaotian.pojo.*;
+import com.xiaotian.pojo.bo.ShopCatBO;
 import com.xiaotian.pojo.bo.SubmitOrderBO;
 import com.xiaotian.pojo.vo.MerchantOrdersVO;
 import com.xiaotian.pojo.vo.OrderVO;
@@ -13,12 +14,14 @@ import com.xiaotian.service.AddressService;
 import com.xiaotian.service.ItemService;
 import com.xiaotian.service.OrderService;
 import com.xiaotian.utils.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrder(List<ShopCatBO> shopCatBOList, SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -93,10 +96,11 @@ public class OrderServiceImpl implements OrderService {
         String itemSpecIdArr[] = itemSpecIds.split(",");
         Integer totalAmount = 0;    // 商品原价累计
         Integer realPayAmount = 0;  // 优惠后的实际支付价格累计
+        List<ShopCatBO> toBeRemovedShopcatdList = new ArrayList<>();
         for (String itemSpecId : itemSpecIdArr) {
 
-            // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 1;
+            // 整合redis后，商品购买的数量重新从redis的购物车中获取
+            Integer buyCounts = getShopCartFromRedis(toBeRemovedShopcatdList, shopCatBOList, itemSpecId);
 
             // 2.1 根据规格id，查询规格的具体信息，主要获取价格
             ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
@@ -148,8 +152,18 @@ public class OrderServiceImpl implements OrderService {
         OrderVO orderVO = new OrderVO();
         orderVO.setOrderId(orderId);
         orderVO.setMerchantOrdersVO(merchantOrdersVO);
-
+        orderVO.setToBeRemoveShopCat(toBeRemovedShopcatdList);
         return orderVO;
+    }
+
+    private Integer getShopCartFromRedis( List<ShopCatBO> toBeRemovedShopcatdList, List<ShopCatBO> shopCatBOList, String itemSpecId) {
+        for (ShopCatBO shopCatBO : shopCatBOList) {
+            if (StringUtils.equals(shopCatBO.getSpecId(), itemSpecId)) {
+                toBeRemovedShopcatdList.add(shopCatBO);
+                return shopCatBO.getNumber();
+            }
+        }
+        return 1;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

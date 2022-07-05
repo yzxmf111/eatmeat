@@ -7,8 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eatmeat-common" />
-        <module name="eatmeat-pojo" />
         <module name="eatmeat-mapper" />
+        <module name="eatmeat-pojo" />
         <module name="eatmeat-api" />
         <module name="eatmeat-service" />
       </profile>

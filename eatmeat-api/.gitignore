@@ -8,3 +8,4 @@ logs
 encodings.xml
 Application.class
 eatmeat-api/target
+*.list
