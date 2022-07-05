@@ -1,6 +1,5 @@
 package com.xiaotian.pojo.bo;
 
-import io.swagger.models.auth.In;
 
 /**
  * @author xiaotian
@@ -16,6 +15,15 @@ public class ShopCatBO {
     private Integer priceNormal;
     private String specId;
     private String specName;
+    private Integer number;
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 
     public String getItemId() {
         return itemId;

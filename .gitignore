@@ -12,4 +12,11 @@ encodings.xml
 *.png
 *.jpg
 */target/*.yml
+*/class
+*/.idea
+*/libraries
+*/lib
+*.png
+*.jpg
+*/target/*.yml
 */calss
