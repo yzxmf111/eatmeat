@@ -160,7 +160,7 @@ public class OrderServiceImpl implements OrderService {
         for (ShopCatBO shopCatBO : shopCatBOList) {
             if (StringUtils.equals(shopCatBO.getSpecId(), itemSpecId)) {
                 toBeRemovedShopcatdList.add(shopCatBO);
-                return shopCatBO.getNumber();
+                return shopCatBO.getBuyCounts();
             }
         }
         return 1;

@@ -29,7 +29,7 @@ public class ShopCatController extends BaseController {
 
 
     @ApiOperation(value = "同步cookie中购物车信息到数据库redis", notes = "同步cookie中购物车信息到数据库redis", httpMethod = "POST")
-    @GetMapping("add")
+    @PostMapping("add")
     public Response syncShopCatFromCookie(@RequestParam String userId,
                                           @RequestBody ShopCatBO shopCatBO,
                                           HttpServletRequest request,
@@ -40,7 +40,7 @@ public class ShopCatController extends BaseController {
 
         // todo 前端用户在登录的情况下，添加商品到购物车，会同时在后端同步购物车到redis缓存
         String shopCatFromCookie = CookieUtils.getCookieValue(request, FOODIE_SHOPCART, true);
-        String shopCatFromRedis = redisOperator.get("shopcart:" + userId);
+        String shopCatFromRedis = redisOperator.get(FOODIE_SHOPCART + ":" + userId);
         //List<ShopCatBO> shopCatBOSForCookie = JSONObject.parseArray(shopCatFromCookie, ShopCatBO.class);
         List<ShopCatBO> shopCatBOSForRedis = JSONObject.parseArray(shopCatFromRedis, ShopCatBO.class);
         Boolean flag = false;
@@ -48,7 +48,7 @@ public class ShopCatController extends BaseController {
             for (ShopCatBO shopCat : shopCatBOSForRedis) {
                 //当前商品已在缓存存在
                 if (StringUtils.equals(shopCat.getSpecId(), shopCatBO.getSpecId())) {
-                    shopCat.setNumber(shopCat.getNumber() + shopCatBO.getNumber());
+                    shopCat.setBuyCounts(shopCat.getBuyCounts() + shopCatBO.getBuyCounts());
                     flag = true;
                 }
             }

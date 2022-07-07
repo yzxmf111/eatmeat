@@ -172,18 +172,19 @@ public class PassportController extends BaseController{
             }
         } else {
             List<ShopCatBO> pendingRemovedCat = new ArrayList<>();
-            List<ShopCatBO> pendingAddCat = new ArrayList<>();
+            //List<ShopCatBO> pendingAddCat = new ArrayList<>();
             if (!CollectionUtils.isEmpty(shopCatBOFromCookie)) {
                 for (ShopCatBO shopCatRedis: shopCatBOFromRedis) {
                     for (ShopCatBO shopCatCookie : shopCatBOFromCookie) {
                         if (StringUtils.equals(shopCatCookie.getSpecId(), shopCatRedis.getSpecId())) {
-                            pendingAddCat.add(shopCatCookie);
+                            //pendingAddCat.add(shopCatCookie);
                             pendingRemovedCat.add(shopCatRedis);
+                            break;
                         }
                     }
                 }
                 shopCatBOFromRedis.removeAll(pendingRemovedCat);
-                shopCatBOFromRedis.addAll(pendingAddCat);
+                shopCatBOFromRedis.addAll(shopCatBOFromCookie);
             }
         }
         redisOperator.set(FOODIE_SHOPCART + ":" + userId, JSONObject.toJSONString(shopCatBOFromRedis));

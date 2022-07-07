@@ -15,14 +15,14 @@ public class ShopCatBO {
     private Integer priceNormal;
     private String specId;
     private String specName;
-    private Integer number;
+    private Integer buyCounts;
 
-    public Integer getNumber() {
-        return number;
+    public Integer getBuyCounts() {
+        return buyCounts;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setBuyCounts(Integer buyCounts) {
+        this.buyCounts = buyCounts;
     }
 
     public String getItemId() {

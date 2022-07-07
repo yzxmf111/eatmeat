@@ -1,5 +1,6 @@
 package com.xiaotian.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xiaotian.enums.YesOrNo;
 import com.xiaotian.pojo.Carousel;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "主页接口", tags = {"主页面显示的相关接口"})
@@ -44,27 +46,33 @@ public class IndexController {
     @GetMapping("carousel")
     public Response queryAllCarouse() {
         String carousels = redisOperator.get("carousels");
+        List<Carousel> carouselList = null;
         if (StringUtils.isBlank(carousels)) {
-            List<Carousel> carouselsList = carouselService.queryAllCarousel(YesOrNo.YES.type);
-            carousels = JSONObject.toJSONString(carouselsList);
+            carouselList = carouselService.queryAllCarousel(YesOrNo.YES.type);
+            carousels = JSONObject.toJSONString(carouselList);
             //过期时间一天，实际场景中有很多时候需要根据需求设置不同的过期时间
             //todo:思考相应的缓存刷新机制（很多轮播图都是广告，是有时限的）
             //1.运营后台刷新并放置新的首页轮播图 2.每天定时刷新 3.自己设置过期时间
             redisOperator.set("carousels", carousels, 86400);
+        } else {
+            carouselList = JSONArray.parseArray(carousels, Carousel.class);
         }
-        return Response.ok(carousels);
+        return Response.ok(carouselList);
     }
 
     @ApiOperation(value = "查询所有商品大分类", notes = "查询所有商品大分类", httpMethod = "GET")
     @GetMapping("cats")
     public Response queryAllMainCategory() {
         String cats = redisOperator.get("cats");
+        List<Category> categoryList = new ArrayList<>();
         if (StringUtils.isBlank(cats)) {
-            List<Category> carousels = categoryService.queryAllMainCategory();
-            cats = JSONObject.toJSONString(carousels);
+            categoryList = categoryService.queryAllMainCategory();
+            cats = JSONObject.toJSONString(categoryList);
             redisOperator.set("cats", cats);
+        } else {
+            categoryList = JSONArray.parseArray(cats, Category.class);
         }
-        return Response.ok(cats);
+        return Response.ok(categoryList);
     }
 
     @ApiOperation(value = "查询所有商品大分类下的子分类", notes = "查询所有商品大分类下的子分类", httpMethod = "GET")
@@ -76,12 +84,15 @@ public class IndexController {
             return Response.errorMsg("分类不存在");
         }
         String subCat = redisOperator.get("subCat:" + fatherId);
+        List<CategoryVO> categoryVOList = null;
         if (StringUtils.isBlank(subCat)) {
-            List<CategoryVO> categoryVOS = categoryService.queryOtherCategory(fatherId);
-            subCat = JSONObject.toJSONString(categoryVOS);
+            categoryVOList = categoryService.queryOtherCategory(fatherId);
+            subCat = JSONObject.toJSONString(categoryVOList);
             redisOperator.set("subCat:" + fatherId, subCat);
+        } else {
+            categoryVOList = JSONArray.parseArray(subCat, CategoryVO.class);
         }
-        return Response.ok(subCat);
+        return Response.ok(categoryVOList);
     }
 
 
