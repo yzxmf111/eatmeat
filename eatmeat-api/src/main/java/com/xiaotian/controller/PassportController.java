@@ -17,11 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Api(value = "注册登录", tags = {"用于注册登录的相关接口"})
 @RestController
 @RequestMapping("passport")
-public class PassportController extends BaseController{
+public class PassportController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -89,8 +90,11 @@ public class PassportController extends BaseController{
         CookieUtils.setCookie(request, response, "user",
                 JsonUtils.objectToJson(userResult), true);
 
-        // TODO 生成用户token，存入redis会话(分布式的会话)
-        // TODO 同步购物车数据（也是到redis）
+        // 生成用户token，1.存入redis会话(分布式的会话)2.存入cookie中等待之后验证
+        String token = UUID.randomUUID().toString();
+        redisOperator.set(USER_TOKEN + ":" + userResult.getId(), token, 604800);
+        CookieUtils.setCookie(request, response, USER_TOKEN, token, true);
+        // 同步购物车数据（也是到redis）
         synCookieAndRedisData(userResult.getId(), request, response);
         return Response.ok();
     }
@@ -124,8 +128,11 @@ public class PassportController extends BaseController{
                 JsonUtils.objectToJson(userResult), true);
 
 
-        // TODO 生成用户token，存入redis会话
-        // TODO 同步购物车数据 （多台电脑之间的数据同步）
+        // 生成用户token，1.存入redis会话(分布式的会话)2.存入cookie中等待之后验证
+        String token = UUID.randomUUID().toString();
+        redisOperator.set(USER_TOKEN + ":" + userResult.getId(), token, 604800);
+        CookieUtils.setCookie(request, response, USER_TOKEN, token, true);
+        // 同步购物车数据 （多台电脑之间的数据同步）
         synCookieAndRedisData(userResult.getId(), request, response);
         return Response.ok(userResult);
     }
@@ -147,7 +154,7 @@ public class PassportController extends BaseController{
      * @param request
      * @param response
      */
-    private void synCookieAndRedisData(String userId, HttpServletRequest request, HttpServletResponse response){
+    private void synCookieAndRedisData(String userId, HttpServletRequest request, HttpServletResponse response) {
         String shopcatFromRedis = redisOperator.get(FOODIE_SHOPCART + ":" + userId);
         String shopcatFromCookie = CookieUtils.getCookieValue(request, FOODIE_SHOPCART, true);
         List<ShopCatBO> shopCatBOFromRedis = new ArrayList<>();
@@ -174,7 +181,7 @@ public class PassportController extends BaseController{
             List<ShopCatBO> pendingRemovedCat = new ArrayList<>();
             //List<ShopCatBO> pendingAddCat = new ArrayList<>();
             if (!CollectionUtils.isEmpty(shopCatBOFromCookie)) {
-                for (ShopCatBO shopCatRedis: shopCatBOFromRedis) {
+                for (ShopCatBO shopCatRedis : shopCatBOFromRedis) {
                     for (ShopCatBO shopCatCookie : shopCatBOFromCookie) {
                         if (StringUtils.equals(shopCatCookie.getSpecId(), shopCatRedis.getSpecId())) {
                             //pendingAddCat.add(shopCatCookie);
@@ -198,14 +205,15 @@ public class PassportController extends BaseController{
                            HttpServletRequest request,
                            HttpServletResponse response) {
 
-        // 清除用户的相关信息的cookie
+        // 清除用户的相关信息的cookie，前端拿不到用户信息就会让你去登陆
         CookieUtils.deleteCookie(request, response, "user");
 
-        // TODO 用户退出登录，需要清空cookie购物车
+        // 用户退出登录，需要清空cookie购物车
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART + ":" + userId);
-        // TODO 分布式会话中需要清除用户数据
-
+        //  分布式会话中需要清除用户数据
+        redisOperator.del(USER_TOKEN + ":" + userId);
         return Response.ok();
     }
+
 
 }
