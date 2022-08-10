@@ -209,7 +209,7 @@ public class PassportController extends BaseController {
         CookieUtils.deleteCookie(request, response, "user");
 
         // 用户退出登录，需要清空cookie购物车
-        CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART + ":" + userId);
+        CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
         //  分布式会话中需要清除用户数据
         redisOperator.del(USER_TOKEN + ":" + userId);
         return Response.ok();
