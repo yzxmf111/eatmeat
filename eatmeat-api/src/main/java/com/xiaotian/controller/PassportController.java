@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.xiaotian.pojo.User;
 import com.xiaotian.pojo.bo.ShopCatBO;
 import com.xiaotian.pojo.bo.UserBO;
+import com.xiaotian.pojo.vo.UserVO;
 import com.xiaotian.service.UserService;
 import com.xiaotian.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -85,15 +87,13 @@ public class PassportController extends BaseController {
         // 4. 实现注册
         User userResult = userService.createUser(userBO);
 
-        userResult = setNullProperty(userResult);
+        //userResult = setNullProperty(userResult);
+        // 生成用户token，1.存入redis会话(分布式的会话)2.存入cookie中等待之后验证
+        UserVO userVO = convertUserToVO(userResult);
 
         CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
+                JsonUtils.objectToJson(userVO), true);
 
-        // 生成用户token，1.存入redis会话(分布式的会话)2.存入cookie中等待之后验证
-        String token = UUID.randomUUID().toString();
-        redisOperator.set(USER_TOKEN + ":" + userResult.getId(), token, 604800);
-        CookieUtils.setCookie(request, response, USER_TOKEN, token, true);
         // 同步购物车数据（也是到redis）
         synCookieAndRedisData(userResult.getId(), request, response);
         return Response.ok();
@@ -121,31 +121,38 @@ public class PassportController extends BaseController {
         if (userResult == null) {
             return Response.errorMsg("用户名或密码不正确");
         }
-
-        userResult = setNullProperty(userResult);
+        //userResult = setNullProperty(userResult);
+        // 生成用户token，1.存入redis会话(分布式的会话)2.存入cookie中等待之后验证
+        UserVO userVO = convertUserToVO(userResult);
 
         CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
+                JsonUtils.objectToJson(userVO), true);
 
 
-        // 生成用户token，1.存入redis会话(分布式的会话)2.存入cookie中等待之后验证
-        String token = UUID.randomUUID().toString();
-        redisOperator.set(USER_TOKEN + ":" + userResult.getId(), token, 604800);
-        CookieUtils.setCookie(request, response, USER_TOKEN, token, true);
+
         // 同步购物车数据 （多台电脑之间的数据同步）
         synCookieAndRedisData(userResult.getId(), request, response);
         return Response.ok(userResult);
     }
 
-    private User setNullProperty(User userResult) {
-        userResult.setPassword(null);
-        userResult.setMobile(null);
-        userResult.setEmail(null);
-        userResult.setCreatedTime(null);
-        userResult.setUpdatedTime(null);
-        userResult.setBirthday(null);
-        return userResult;
+    private UserVO convertUserToVO(User userResult) {
+        String token = UUID.randomUUID().toString().trim();
+        redisOperator.set(USER_TOKEN + ":" + userResult.getId(), token, 604800);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userResult, userVO);
+        userVO.setUserUniqueToken(token);
+        return userVO;
     }
+
+    //private User setNullProperty(User userResult) {
+    //    userResult.setPassword(null);
+    //    userResult.setMobile(null);
+    //    userResult.setEmail(null);
+    //    userResult.setCreatedTime(null);
+    //    userResult.setUpdatedTime(null);
+    //    userResult.setBirthday(null);
+    //    return userResult;
+    //}
 
     /**
      * 同步cookie和redis的数据

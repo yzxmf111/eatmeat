@@ -22,4 +22,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 addResourceLocations("file:/Users/xiaotian/Downloads/items/userface")
                 .addResourceLocations("classpath:/META_INF.resources"); //swagger2默认的映射位置
     }
+
+
 }
