@@ -38,7 +38,7 @@ public class ShopCatController extends BaseController {
             return Response.errorMsg(ErrorEnum.PARAM_ERROR.desc);
         }
 
-        // todo 前端用户在登录的情况下，添加商品到购物车，会同时在后端同步购物车到redis缓存
+        //  前端用户在登录的情况下，添加商品到购物车，会同时在后端同步购物车到redis缓存
         String shopCatFromCookie = CookieUtils.getCookieValue(request, FOODIE_SHOPCART, true);
         String shopCatFromRedis = redisOperator.get(FOODIE_SHOPCART + ":" + userId);
         //List<ShopCatBO> shopCatBOSForCookie = JSONObject.parseArray(shopCatFromCookie, ShopCatBO.class);

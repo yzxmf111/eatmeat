@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="eatmeat-sso" />
         <module name="eatmeat-common" />
         <module name="eatmeat-mapper" />
         <module name="eatmeat-pojo" />
@@ -21,6 +22,7 @@
       <module name="eatmeat-mapper" options="-parameters" />
       <module name="eatmeat-pojo" options="-parameters" />
       <module name="eatmeat-service" options="-parameters" />
+      <module name="eatmeat-sso" options="-parameters" />
     </option>
   </component>
 </project>
