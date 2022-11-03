@@ -10,6 +10,7 @@
         <module name="eatmeat-common" />
         <module name="eatmeat-mapper" />
         <module name="eatmeat-pojo" />
+        <module name="eatmet-search" />
         <module name="eatmeat-api" />
         <module name="eatmeat-service" />
       </profile>
@@ -23,6 +24,7 @@
       <module name="eatmeat-pojo" options="-parameters" />
       <module name="eatmeat-service" options="-parameters" />
       <module name="eatmeat-sso" options="-parameters" />
+      <module name="eatmet-search" options="-parameters" />
     </option>
   </component>
 </project>
