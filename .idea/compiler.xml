@@ -7,11 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eatmeat-sso" />
-        <module name="eatmeat-common" />
         <module name="eatmeat-mapper" />
         <module name="eatmeat-pojo" />
         <module name="eatmet-search" />
         <module name="eatmeat-api" />
+        <module name="eatmeat-common" />
         <module name="eatmeat-service" />
       </profile>
     </annotationProcessing>

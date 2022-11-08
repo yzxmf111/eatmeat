@@ -92,30 +92,30 @@ public class ItemController {
     }
 
 
-    @ApiOperation(value = "商品查询接口", notes = "商品查询接口", httpMethod = "GET")
-    @GetMapping("search")
-    public Response queryItem(
-            @ApiParam(name = "搜素关键字", value = "keywords", required = true)
-            @RequestParam String keywords,
-            @ApiParam(name = "排序方式", value = "sort", required = false)
-            @RequestParam(required = false) String sort,
-        @ApiParam(name = "当前页数", value = "pageNum", required = false)
-        @RequestParam(required = false) Integer page,
-        @ApiParam(name = "当前页数商品数量", value = "pageSize", required = false)
-        @RequestParam(required = false) Integer pageSize) {
-        if (StringUtils.isBlank(keywords)) {
-            return Response.errorMsg("请输入搜索内容");
-        }
-        if (page == null) {
-            page = 1;
-        }
-        if (pageSize == null) {
-            pageSize = 20;
-        }
-        //enum
-        PageResult pageResult = itemService.itemsQueryPages(page, pageSize, keywords, sort);
-        return Response.ok(pageResult);
-    }
+    //@ApiOperation(value = "商品查询接口", notes = "商品查询接口", httpMethod = "GET")
+    //@GetMapping("search")
+    //public Response queryItem(
+    //        @ApiParam(name = "搜素关键字", value = "keywords", required = true)
+    //        @RequestParam String keywords,
+    //        @ApiParam(name = "排序方式", value = "sort", required = false)
+    //        @RequestParam(required = false) String sort,
+    //    @ApiParam(name = "当前页数", value = "pageNum", required = false)
+    //    @RequestParam(required = false) Integer page,
+    //    @ApiParam(name = "当前页数商品数量", value = "pageSize", required = false)
+    //    @RequestParam(required = false) Integer pageSize) {
+    //    if (StringUtils.isBlank(keywords)) {
+    //        return Response.errorMsg("请输入搜索内容");
+    //    }
+    //    if (page == null) {
+    //        page = 1;
+    //    }
+    //    if (pageSize == null) {
+    //        pageSize = 20;
+    //    }
+    //    //enum
+    //    PageResult pageResult = itemService.itemsQueryPages(page, pageSize, keywords, sort);
+    //    return Response.ok(pageResult);
+    //}
 
     @ApiOperation(value = "商品查询接口", notes = "商品查询接口", httpMethod = "GET")
     @GetMapping("catItems")

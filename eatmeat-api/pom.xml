@@ -31,5 +31,23 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.70</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>cn.tongdun</groupId>-->
+<!--            <artifactId>ecology-fusion</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/lib/ecology-fusion-1.0.jar</systemPath>-->
+<!--        </dependency>-->
     </dependencies>
+
+    <build>
+        <finalName>springboot-course</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
