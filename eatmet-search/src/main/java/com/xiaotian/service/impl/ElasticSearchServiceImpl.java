@@ -4,6 +4,7 @@ import com.xiaotian.pojo.ItemSearch;
 import com.xiaotian.pojo.Stu;
 import com.xiaotian.service.ElasticSearchService;
 import com.xiaotian.utils.PageResult;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -45,7 +46,14 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
         String preTags = "<font color = 'red'>";
         String postTags = "</font>";
         //排序的text（文本）字段需要用用keyword属性
-        //SortBuilder sortBuilderOne = new FieldSortBuilder("money").order(SortOrder.ASC);
+        SortBuilder sortMethod = null;
+        if (StringUtils.equals(sort, "")) {
+            sortMethod  = new FieldSortBuilder("").order(SortOrder.ASC);
+        } else if (StringUtils.equals(sort, "1")) {
+            sortMethod  = new FieldSortBuilder("").order(SortOrder.ASC);
+        } else {
+            sortMethod  = new FieldSortBuilder("").order(SortOrder.ASC);
+        }
         //SortBuilder sortBuilderTwo = new FieldSortBuilder("age").order(SortOrder.DESC);
         String searchField = "itemName";
         SearchQuery query = new NativeSearchQueryBuilder()
@@ -56,7 +64,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
                         .preTags(preTags)
                         .postTags(postTags))
                 //设置排序
-                //.withSort(sortBuilderOne)
+                .withSort(sortMethod)
                 //.withSort(sortBuilderTwo)
                 //设置分页
                 .withPageable(pageable)

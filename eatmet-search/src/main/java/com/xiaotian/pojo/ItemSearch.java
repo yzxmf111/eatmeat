@@ -11,7 +11,7 @@ import javax.persistence.Column;
  * @description
  * @date 2022-11-03 11:02
  */
-@Document(indexName = "eat-meat", type = "_doc")
+@Document(indexName = "eat-meat", type = "doc")
 public class ItemSearch {
 
     /**

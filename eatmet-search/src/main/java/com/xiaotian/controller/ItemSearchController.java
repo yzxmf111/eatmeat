@@ -44,6 +44,6 @@ public class ItemSearchController {
         //es的页码从0开始
         page --;
         PageResult pageResult = elasticSearchService.itemsQueryPages(page, pageSize, keywords, sort);
-        return Response.ok(null);
+        return Response.ok(pageResult);
     }
 }
