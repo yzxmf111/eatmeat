@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eatmeat-sso" />
+        <module name="eatmeat-ai-picture" />
         <module name="eatmeat-mapper" />
         <module name="eatmeat-pojo" />
         <module name="eatmet-search" />
@@ -18,6 +19,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eatmeat-ai-picture" options="-parameters" />
       <module name="eatmeat-api" options="-parameters" />
       <module name="eatmeat-common" options="-parameters" />
       <module name="eatmeat-mapper" options="-parameters" />

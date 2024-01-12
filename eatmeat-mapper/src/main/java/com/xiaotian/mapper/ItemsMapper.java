@@ -45,6 +45,6 @@ public interface ItemsMapper extends MyMapper<Items> {
     List<ShopCatVO> refresh(@Param("specIds") List<String> specIds);
 
 
-    public int decreaseItemSpecStock(@Param("specId") String specId,
+    int decreaseItemSpecStock(@Param("specId") String specId,
                                      @Param("pendingCounts") int pendingCounts);
 }

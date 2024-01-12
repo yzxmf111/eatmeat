@@ -20,6 +20,7 @@
         <module>eatmeat-api</module>
         <module>eatmeat-sso</module>
         <module>eatmet-search</module>
+        <module>eatmeat-ai-picture</module>
     </modules>
 
     <!--建立聚合工程，聚合工程下边的各个子模块之间可以通过maven相互引用，不用写很多重复代码-->
